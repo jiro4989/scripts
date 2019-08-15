@@ -13,10 +13,10 @@ main() {
   fi
 
   seq 1 3 | while read page; do
-    curl -s "https://api.github.com/users/$USER/repos?per_page=100&page=$page" \
-      | grep full_name \
-      | cut -d : -f 2 \
-      | tr -d '", '
+    curl -s "https://api.github.com/users/$USER/repos?per_page=100&page=$page" |
+      grep full_name |
+      cut -d : -f 2 |
+      tr -d '", '
   done
 }
 

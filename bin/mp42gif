@@ -2,7 +2,7 @@
 
 set -eu
 
-type ffmpeg >/dev/null 2>&1
+type ffmpeg > /dev/null 2>&1
 ret=$?
 if [ $ret -ne 0 ]; then
   cat << EOS >&2

@@ -8,12 +8,12 @@ while ((0 < $#)); do
   opt=$1
   shift
   case $opt in
-    -h|--help)
-    cat << EOS
+    -h | --help)
+      cat << EOS
 $SCRIPT_NAME はGitのログをツリー状にし、ログを1行で出力する
 EOS
-    exit
-    ;;
+      exit
+      ;;
   esac
 done
 

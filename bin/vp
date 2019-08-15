@@ -14,16 +14,17 @@ main() {
     local opt=$1
     shift
     case "$opt" in
-      -h|--help)
+      -h | --help)
         usage
         return
         ;;
-      -v|--version)
+      -v | --version)
         echo -e "$VERSION"
         return
         ;;
       *)
         args+=($opt)
+        ;;
     esac
   done
 
