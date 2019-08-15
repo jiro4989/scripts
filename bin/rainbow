@@ -53,8 +53,8 @@ gradation() {
   local g_diff=$(((g2 - g1) / span))
   local b_diff=$(((b2 - b1) / span))
 
-  for ((i = 0; i < $span; i++)); do
-    color_format $format $((r1 + i * r_diff)) $((g1 + i * g_diff)) $((b1 + i * b_diff)) "$text"
+  for ((i = 0; i < "$span"; i++)); do
+    color_format "$format" $((r1 + i * r_diff)) $((g1 + i * g_diff)) $((b1 + i * b_diff)) "$text"
   done
 }
 
@@ -129,14 +129,14 @@ if [ "$format" = json ]; then
   echo "["
 fi
 (
-  gradation $span $format 255 0 0 255 69 0 "$text"
-  gradation $span $format 255 69 0 255 255 0 "$text"
-  gradation $span $format 255 255 0 0 128 0 "$text"
-  gradation $span $format 0 128 0 0 0 255 "$text"
-  gradation $span $format 0 0 255 75 0 130 "$text"
-  gradation $span $format 75 0 130 238 130 238 "$text"
-  gradation $span $format 238 130 238 255 0 0 "$text"
-) | awk -v format=$format '
+  gradation "$span" "$format" 255 0 0 255 69 0 "$text"
+  gradation "$span" "$format" 255 69 0 255 255 0 "$text"
+  gradation "$span" "$format" 255 255 0 0 128 0 "$text"
+  gradation "$span" "$format" 0 128 0 0 0 255 "$text"
+  gradation "$span" "$format" 0 0 255 75 0 130 "$text"
+  gradation "$span" "$format" 75 0 130 238 130 238 "$text"
+  gradation "$span" "$format" 238 130 238 255 0 0 "$text"
+) | awk -v format="$format" '
     { array[NR] = $0 }
     END{
       for (i in array) {

@@ -17,7 +17,7 @@ main() {
   local gift=false
   local unit=円
   local hosii=false
-  local yen=()
+  local yen_list=()
   while ((0 < $#)); do
     local opt=$1
     shift
@@ -52,17 +52,17 @@ main() {
         exit 1
         ;;
       *)
-        yen+=($opt)
+        yen_list+=("$opt")
         ;;
     esac
   done
 
   # お金の指定がなければ5
-  if [ ${#yen[@]} -lt 1 ]; then
-    yen+=(5)
+  if [ "${#yen_list[@]}" -lt 1 ]; then
+    yen_list+=(5)
   fi
 
-  for y in "${yen[@]}"; do
+  for y in "${yen_list[@]}"; do
     print_trillion "$y" "$no_time" "$full_yen" "$gift" "$unit" "$hosii"
   done
 }
@@ -88,7 +88,7 @@ print_trillion() {
   u=$(shuf -en1 "${UNIT_LIST[@]}" x | sed "s/x//")
 
   local text
-  text=$(shuf -en1 ${t}給${yen}{,0}{,0}{,0}${u}円欲しい！)
+  text=$(shuf -en1 "${t}"給"${yen}"{,0}{,0}{,0}"${u}"円欲しい！)
 
   # 時間給の出力を消す
   if [ "$no_time" = true ]; then
@@ -121,11 +121,11 @@ print_trillion() {
   fi
 
   # なんと、プレゼントしてしまう
-  if [ $gift = true ]; then
-    text=$(echo $text | sed -E 's/欲しい/あげる/')
+  if [ "$gift" = true ]; then
+    text=$(echo "$text" | sed -E 's/欲しい/あげる/')
   fi
 
-  echo $text | sed 's/円/'"$unit"'/g'
+  echo "${text//円/$unit}"
 }
 
 usage() {
