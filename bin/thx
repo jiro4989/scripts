@@ -1,0 +1,97 @@
+#!/bin/bash
+
+set -eu
+
+SCRIPT_NAME="$(basename "${BASH_SOURCE:-$0}")"
+readonly SCRIPT_NAME
+
+readonly TEMPLATE=(
+  "ありがとう<REPLACE>"
+  "いつもありがとうございます、<REPLACE>"
+  "<REPLACE>、いつもありがとうございます"
+  "<REPLACE>！<REPLACE>！素晴らしい！！！ありがとう！！！！！"
+  "<REPLACE>好き"
+  "感謝します、<REPLACE>"
+  "<REPLACE>素晴らしすぎる！"
+  "<REPLACE>！<REPLACE>！！<REPLACE>！！！しゅきいいいいい！！！んほぉおおおお！！！"
+  "感動した・・・<REPLACE>ありがとう・・・"
+  "<REPLACE>好き！好き！！！"
+  "<REPLACE>のおかげで明日も頑張れそうです！"
+  "はぁ・・・<REPLACE>好き"
+  "<REPLACE>が大好きです"
+  "わーい<REPLACE>だ！嬉しい・・・"
+  "こうして言葉にするのは初めてですが、<REPLACE>にはいつも感謝しています"
+)
+readonly TEMPLATE_COUNT=${#TEMPLATE[@]}
+
+readonly VERSION="$SCRIPT_NAME version 1.0.0
+Copyright (c) 2019 jiro4989
+Released under the MIT License.
+https://github.com/jiro4989/scripts"
+
+main() {
+  if (( $# < 1 )); then
+    say "$USER"
+    return
+  fi
+
+  while ((0 < $#)); do
+    local opt="$1"
+    shift
+    case "$opt" in
+      -h | --help)
+      usage
+      return
+      ;;
+    -v | --version)
+      echo "$VERSION"
+      return
+      ;;
+    *)
+      say "$opt"
+      ;;
+    esac
+  done
+}
+
+say() {
+  local target=$1
+  local idx=$(( RANDOM % TEMPLATE_COUNT ))
+  local tmpl=${TEMPLATE[$idx]}
+  echo ${tmpl//<REPLACE>/$target}
+}
+
+usage() {
+  cat << EOS
+                       ご閲覧いただきありがとうございます
+
+                   $SCRIPT_NAME は感謝の意を伝えるためのセリフ集です。
+
+                    感謝の想いは言葉にしないと伝わりません。
+
+                           あなたが触れたものに対して
+                            あなたの感じたその喜びを
+                      素直に言葉にしてみてはいかがですか。
+
+                   「ありがとう」と言われて嫌な人はいません。
+
+                    このコマンドにあなたの気持ちを代弁させて
+                       あなたの想いを届けましょう。
+
+                    Usage:
+                        $SCRIPT_NAME
+                        $SCRIPT_NAME <target>...
+                        $SCRIPT_NAME -h | --help
+
+                    Examples:
+                        $ $SCRIPT_NAME システム管理者
+                        いつもありがとうございます、システム管理者
+                    
+                    Options:
+                        -h, --help       このヘルプを出力する
+                        -v, --version    バージョン情報を出力する
+EOS
+}
+
+main ${1+"$@"}
+exit $?
