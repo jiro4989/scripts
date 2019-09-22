@@ -30,7 +30,7 @@ Released under the MIT License.
 https://github.com/jiro4989/scripts"
 
 main() {
-  if (( $# < 1 )); then
+  if (($# < 1)); then
     say "$USER"
     return
   fi
@@ -40,23 +40,23 @@ main() {
     shift
     case "$opt" in
       -h | --help)
-      usage
-      return
-      ;;
-    -v | --version)
-      echo "$VERSION"
-      return
-      ;;
-    *)
-      say "$opt"
-      ;;
+        usage
+        return
+        ;;
+      -v | --version)
+        echo "$VERSION"
+        return
+        ;;
+      *)
+        say "$opt"
+        ;;
     esac
   done
 }
 
 say() {
   local target=$1
-  local idx=$(( RANDOM % TEMPLATE_COUNT ))
+  local idx=$((RANDOM % TEMPLATE_COUNT))
   local tmpl=${TEMPLATE[$idx]}
   echo ${tmpl//<REPLACE>/$target}
 }
