@@ -58,7 +58,7 @@ say() {
   local target=$1
   local idx=$((RANDOM % TEMPLATE_COUNT))
   local tmpl=${TEMPLATE[$idx]}
-  echo ${tmpl//<REPLACE>/$target}
+  echo "${tmpl//<REPLACE>/$target}"
 }
 
 usage() {
