@@ -95,14 +95,6 @@
   [ "$status" -ne 0 ]
 }
 
-@test "vp" {
-  run bash -c "vp -h"
-  [ "$status" -eq 0 ]
-
-  run bash -c "vp -v"
-  [ "$status" -eq 0 ]
-}
-
 @test "5ktrillion" {
   run bash -c "5ktrillion"
   [ "$status" -eq 0 ]
