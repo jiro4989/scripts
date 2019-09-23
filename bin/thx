@@ -24,7 +24,7 @@ readonly TEMPLATE=(
 )
 readonly TEMPLATE_COUNT=${#TEMPLATE[@]}
 
-readonly VERSION="$SCRIPT_NAME version 1.0.0
+readonly VERSION="$SCRIPT_NAME version 1.0.1
 Copyright (c) 2019 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/scripts"
@@ -63,33 +63,34 @@ say() {
 
 usage() {
   cat << EOS
-                       ご閲覧いただきありがとうございます
+      ご閲覧いただきありがとうございます
 
-                   $SCRIPT_NAME は感謝の意を伝えるためのセリフ集です。
+  $SCRIPT_NAME は感謝の意を伝えるためのセリフ集です。
 
-                    感謝の想いは言葉にしないと伝わりません。
+   感謝の想いは言葉にしないと伝わりません。
 
-                           あなたが触れたものに対して
-                            あなたの感じたその喜びを
-                      素直に言葉にしてみてはいかがですか。
+          あなたが触れたものに対して
+           あなたの感じたその喜びを
+     素直に言葉にしてみてはいかがですか。
 
-                   「ありがとう」と言われて嫌な人はいません。
+  「ありがとう」と言われて嫌な人はいません。
 
-                    このコマンドにあなたの気持ちを代弁させて
-                       あなたの想いを届けましょう。
+   このコマンドにあなたの気持ちを代弁させて
+         あなたの想いを届けましょう。
 
-                    Usage:
-                        $SCRIPT_NAME
-                        $SCRIPT_NAME <target>...
-                        $SCRIPT_NAME -h | --help
+Usage:
+    $SCRIPT_NAME
+    $SCRIPT_NAME <target>...
+    $SCRIPT_NAME -h | --help
+    $SCRIPT_NAME -v | --version
 
-                    Examples:
-                        $ $SCRIPT_NAME システム管理者
-                        いつもありがとうございます、システム管理者
-                    
-                    Options:
-                        -h, --help       このヘルプを出力する
-                        -v, --version    バージョン情報を出力する
+Examples:
+    $ $SCRIPT_NAME システム管理者
+    いつもありがとうございます、システム管理者
+
+Options:
+    -h, --help       このヘルプを出力する
+    -v, --version    バージョン情報を出力する
 EOS
 }
 
