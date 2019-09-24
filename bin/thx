@@ -19,12 +19,14 @@ readonly TEMPLATE=(
   "<REPLACE>のおかげで明日も頑張れそうです！"
   "はぁ・・・<REPLACE>好き"
   "<REPLACE>が大好きです"
+  "大好き<REPLACE>！"
   "わーい<REPLACE>だ！嬉しい・・・"
   "こうして言葉にするのは初めてですが、<REPLACE>にはいつも感謝しています"
+  "<REPLACE>には感謝の言葉もありません"
 )
 readonly TEMPLATE_COUNT=${#TEMPLATE[@]}
 
-readonly VERSION="$SCRIPT_NAME version 1.0.1
+readonly VERSION="$SCRIPT_NAME version 1.1.0
 Copyright (c) 2019 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/scripts"
