@@ -13,9 +13,6 @@
   run bash -c "5ktrillion -n"
   [ "$status" -eq 0 ]
 
-  run bash -c "5ktrillion -t"
-  [ "$status" -eq 0 ]
-
   run bash -c "5ktrillion -g"
   [ "$status" -eq 0 ]
 
@@ -25,11 +22,16 @@
   run bash -c "5ktrillion 1 2 3 4 5"
   [ "$status" -eq 0 ]
 
-  run bash -c "5ktrillion -n -t -g -u ドル 1 2 3 4 5"
+  run bash -c "5ktrillion -n -f -g -u ジンバブエドル"
   [ "$status" -eq 0 ]
 
-  run bash -c "5ktrillion -x"
+  run bash -c "5ktrillion -5 -n -f -g -u ジンバブエドル 1"
   [ "$status" -eq 0 ]
+  [ "$output" = "5000兆円欲しい！" ]
+
+  run bash -c "5ktrillion --5000-cho-yen-hosii"
+  [ "$status" -eq 0 ]
+  [ "$output" = "5000兆円欲しい！" ]
 }
 
 @test "color" {
@@ -95,35 +97,45 @@
   [ "$status" -ne 0 ]
 }
 
-@test "5ktrillion" {
-  run bash -c "5ktrillion"
+@test "thx stdin" {
+  run bash -c 'echo オペレータ | thx'
   [ "$status" -eq 0 ]
+  [ "$(grep オペレータ <<< $output | wc -l)" -eq 1 ]
+}
 
-  run bash -c "5ktrillion -h"
+@test "thx -h" {
+  run thx -h
   [ "$status" -eq 0 ]
+  [ "$(grep ありがとう <<< ${lines[0]} | wc -l)" -eq 1 ]
+}
 
-  run bash -c "5ktrillion -v"
+@test "thx --help" {
+  run thx --help
   [ "$status" -eq 0 ]
+  [ "$(grep ありがとう <<< ${lines[0]} | wc -l)" -eq 1 ]
+}
 
-  run bash -c "5ktrillion -n -f -g -u ジンバブエドル"
+@test "thx -v" {
+  run thx -v
   [ "$status" -eq 0 ]
+  [ "$(grep scripts <<< $output | wc -l)" -eq 1 ]
+}
 
-  run bash -c "5ktrillion -5"
-  [ "$output" = "5000兆円欲しい！" ]
+@test "thx --version" {
+  run thx --version
   [ "$status" -eq 0 ]
+  [ "$(grep scripts <<< $output | wc -l)" -eq 1 ]
+}
 
-  run bash -c "5ktrillion -5 1"
-  [ "$output" = "5000兆円欲しい！" ]
+@test "thx <target>" {
+  run thx システム管理者
   [ "$status" -eq 0 ]
+  [ "$(grep システム管理者 <<< $output | wc -l)" -eq 1 ]
+}
 
-  run bash -c "5ktrillion -5 -n -f -g -u ジンバブエドル 1"
-  [ "$output" = "5000兆円欲しい！" ]
+@test "thx <target1> <target2>" {
+  run thx システム管理者 オペレータ
   [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion --5000-cho-yen-hosii"
-  [ "$output" = "5000兆円欲しい！" ]
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion -x"
-  [ "$status" -ne 0 ]
+  [ "$(grep システム管理者 <<< ${lines[0]} | wc -l)" -eq 1 ]
+  [ "$(grep オペレータ <<< ${lines[1]} | wc -l)" -eq 1 ]
 }
