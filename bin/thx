@@ -26,17 +26,22 @@ readonly TEMPLATE=(
 )
 readonly TEMPLATE_COUNT=${#TEMPLATE[@]}
 
-readonly VERSION="$SCRIPT_NAME version 1.1.0
+readonly VERSION="$SCRIPT_NAME version 2.0.0
 Copyright (c) 2019 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/scripts"
 
 main() {
+  # 引数がない時は標準入力まち
   if (($# < 1)); then
-    say "$USER"
+    cat | while read -r target; do
+      say "$target"
+    done
     return
   fi
 
+  # help, versionのときはアプリを終了する
+  local args=()
   while ((0 < $#)); do
     local opt="$1"
     shift
@@ -50,9 +55,13 @@ main() {
         return
         ;;
       *)
-        say "$opt"
+        args+=("$opt")
         ;;
     esac
+  done
+
+  for target in "${args[@]}"; do
+    say "$target"
   done
 }
 
