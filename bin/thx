@@ -4,8 +4,12 @@ set -eu
 
 SCRIPT_NAME="$(basename "${BASH_SOURCE:-$0}")"
 readonly SCRIPT_NAME
+readonly VERSION="$SCRIPT_NAME version 2.2.0
+Copyright (c) 2019 jiro4989
+Released under the MIT License.
+https://github.com/jiro4989/scripts"
 
-readonly TEMPLATE=(
+readonly TEMPLATES=(
   "ありがとう{}"
   "いつもありがとうございます、{}"
   "{}、いつもありがとうございます"
@@ -28,12 +32,7 @@ readonly TEMPLATE=(
   "{}よかった"
   "{}流石です"
 )
-readonly TEMPLATE_COUNT=${#TEMPLATE[@]}
-
-readonly VERSION="$SCRIPT_NAME version 2.2.0
-Copyright (c) 2019 jiro4989
-Released under the MIT License.
-https://github.com/jiro4989/scripts"
+readonly TEMPLATE_COUNT=${#TEMPLATES[@]}
 
 main() {
   # 引数がない時は標準入力まち
@@ -72,7 +71,7 @@ main() {
 say() {
   local target=$1
   local idx=$((RANDOM % TEMPLATE_COUNT))
-  local tmpl=${TEMPLATE[$idx]}
+  local tmpl=${TEMPLATES[$idx]}
   echo "${tmpl//"{}"/$target}"
 }
 
