@@ -54,7 +54,7 @@ main() {
     esac
   done
 
-  # 引数がなければ標準入力町にするためのコマンド設定
+  # 引数がなければ標準入力待ちにするためのコマンド設定
   local cmd_input=(echo -e "${args[*]}")
   if [[ "${#args[@]}" -lt 1 ]]; then
     cmd_input=(cat)
