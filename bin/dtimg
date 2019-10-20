@@ -11,8 +11,8 @@ https://github.com/jiro4989/scripts"
 main() {
   local args=()
   local font_size=40                    # ベースになるテキスト生成時のフォントサイズ
-  local bg_text="　"                     # 背景ドットに使う文字
-  local fg_text="●"                     # 前景(フォント)ドットに使う文字
+  local bg_text="  "                    # 背景ドットに使う文字
+  local fg_text="00"                    # 前景(フォント)ドットに使う文字
   local dot_font_size=10                # ドットのフォントサイズ
   local save_to_shellgei_imagedir=false # シェル芸botの画像ディレクトリに画像を保存する
 
@@ -29,16 +29,20 @@ main() {
         return
         ;;
       -F | --fontsize)
-        font_size="$opt"
+        font_size="$1"
+        shift
         ;;
       -b | --background)
-        bg_text="$opt"
+        bg_text="$1"
+        shift
         ;;
       -g | --foreground)
-        fg_text="$opt"
+        fg_text="$1"
+        shift
         ;;
       -d | --dot-fontsize)
-        dot_font_size="$opt"
+        dot_font_size="$1"
+        shift
         ;;
       -s | --shellgei-imagedir)
         save_to_shellgei_imagedir=true
