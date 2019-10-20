@@ -1,0 +1,105 @@
+#!/bin/bash
+
+set -eu
+
+readonly SCRIPT_NAME=$(basename "$0")
+readonly VERSION="$SCRIPT_NAME version 1.1.0
+Copyright (c) 2019 jiro4989
+Released under the MIT License.
+https://github.com/jiro4989/scripts"
+
+main() {
+  local args=()
+  local font_size=40                    # ベースになるテキスト生成時のフォントサイズ
+  local bg_text="　"                     # 背景ドットに使う文字
+  local fg_text="●"                     # 前景(フォント)ドットに使う文字
+  local dot_font_size=10                # ドットのフォントサイズ
+  local save_to_shellgei_imagedir=false # シェル芸botの画像ディレクトリに画像を保存する
+
+  while ((0 < $#)); do
+    local opt="$1"
+    shift
+    case "$opt" in
+      -h | --help)
+        usage
+        return
+        ;;
+      -v | --version)
+        echo "$VERSION"
+        return
+        ;;
+      -F | --fontsize)
+        font_size="$opt"
+        ;;
+      -b | --background)
+        bg_text="$opt"
+        ;;
+      -g | --foreground)
+        fg_text="$opt"
+        ;;
+      -d | --dot-fontsize)
+        dot_font_size="$opt"
+        ;;
+      -s | --shellgei-imagedir)
+        save_to_shellgei_imagedir=true
+        ;;
+      *)
+        args+=("$opt")
+        ;;
+    esac
+  done
+
+  local cmd_textimg=(textimg -F "$dot_font_size")
+  if [ "$save_to_shellgei_imagedir" = true ]; then
+    cmd_textimg+=(-s)
+  fi
+
+  echo -e "${args[*]}" |
+    textimg -F "$font_size" |
+    convert - -compress none pbm:- |
+    tail -n +3 |
+    tr -d " " |
+    replace_text "$bg_text" "$fg_text" |
+    "${cmd_textimg[@]}"
+}
+
+usage() {
+  cat << EOS
+$SCRIPT_NAME is a dot text image command.
+
+Usage:
+    $SCRIPT_NAME [options] [text...]
+
+Options:
+    -h, --help                   ヘルプを出力して終了する
+    -v, --version                バージョン情報を出力して終了する
+    -F, --fontsize NUMBER        ベースになるテキストを生成時のフォントサイズを
+                                 指定する
+    -b, --background TEXT        背景文字を指定する
+    -g, --foreground TEXT        前景文字を指定する
+    -d, --dot-fontsize NUMBER    画像出力時のドットのフォントサイズを指定する
+    -s, --shellgei-imagedir      /images/t.pngに画像を保存する
+EOS
+}
+
+## replace_text は標準入力のテキストを置換して標準出力にだす。
+## 置換する文字はそれぞれ以下の対応となる。
+##
+## * 1 - $1 (bg)
+## * 0 - $2 (fg)
+replace_text() {
+  local bg=$1
+  local fg=$2
+  awk \
+    -v bg="$bg" \
+    -v fg="$fg" \
+    '
+    {
+      gsub("1", bg)
+      gsub("0", fg)
+      print
+    }'
+}
+
+main ${1+"$@"}
+exit $?
