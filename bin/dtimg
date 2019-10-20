@@ -3,7 +3,7 @@
 set -eu
 
 readonly SCRIPT_NAME=$(basename "$0")
-readonly VERSION="$SCRIPT_NAME version 1.1.0
+readonly VERSION="$SCRIPT_NAME version 1.0.0
 Copyright (c) 2019 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/scripts"
@@ -49,12 +49,19 @@ main() {
     esac
   done
 
+  # 引数がなければ標準入力町にするためのコマンド設定
+  local cmd_input=(echo -e "${args[*]}")
+  if [[ "${#args[@]}" -lt 1 ]]; then
+    cmd_input=(cat)
+  fi
+
+  # シェル芸ディレクトリに保存するフラグがtrueのときはコマンドにオプションを追加
   local cmd_textimg=(textimg -F "$dot_font_size")
-  if [ "$save_to_shellgei_imagedir" = true ]; then
+  if [[ "$save_to_shellgei_imagedir" == true ]]; then
     cmd_textimg+=(-s)
   fi
 
-  echo -e "${args[*]}" |
+  "${cmd_input[@]}" |
     textimg -F "$font_size" |
     convert - -compress none pbm:- |
     tail -n +3 |
@@ -65,7 +72,11 @@ main() {
 
 usage() {
   cat << EOS
-$SCRIPT_NAME is a dot text image command.
+$SCRIPT_NAME はテキストをドット風に画像として出力する。
+
+Dependencies:
+    * convert (ImageMagick)
+    * textimg (https://github.com/jiro4989/textimg)
 
 Usage:
     $SCRIPT_NAME [options] [text...]
