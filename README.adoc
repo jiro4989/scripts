@@ -14,6 +14,8 @@ image:https://travis-ci.org/jiro4989/scripts.svg?branch=master["Build Status", l
 |rainbow|虹色を様々な書式で出力する
 |5ktrillion|「5000兆円ほしい」を出力する
 |thx|感謝の言葉を出力する
+|dtimg|テキストをドット風の画像として出力する。 +
+依存ツール: convert (ImageMagick), https://github.com/jiro4989/textimg[textimg]
 |=================
 
 == Install
