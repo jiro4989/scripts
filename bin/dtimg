@@ -16,7 +16,7 @@ main() {
   local fg_text="00"                    # 前景(フォント)ドットに使う文字
   local dot_font_size=10                # ドットのフォントサイズ
   local save_to_shellgei_imagedir=false # シェル芸botの画像ディレクトリに画像を保存する
-  local raw=false # テキストのまま出力する
+  local raw=false                       # テキストのまま出力する
 
   while ((0 < $#)); do
     local opt="$1"
