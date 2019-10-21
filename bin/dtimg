@@ -4,7 +4,7 @@ set -eu
 
 SCRIPT_NAME="$(basename "${BASH_SOURCE:-$0}")"
 readonly SCRIPT_NAME
-readonly VERSION="$SCRIPT_NAME version 1.0.0
+readonly VERSION="$SCRIPT_NAME version 1.1.0
 Copyright (c) 2019 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/scripts"
@@ -16,6 +16,7 @@ main() {
   local fg_text="00"                    # 前景(フォント)ドットに使う文字
   local dot_font_size=10                # ドットのフォントサイズ
   local save_to_shellgei_imagedir=false # シェル芸botの画像ディレクトリに画像を保存する
+  local raw=false # テキストのまま出力する
 
   while ((0 < $#)); do
     local opt="$1"
@@ -48,6 +49,9 @@ main() {
       -s | --shellgei-imagedir)
         save_to_shellgei_imagedir=true
         ;;
+      -R | --raw)
+        raw=true
+        ;;
       *)
         args+=("$opt")
         ;;
@@ -64,6 +68,11 @@ main() {
   local cmd_textimg=(textimg -F "$dot_font_size")
   if [[ "$save_to_shellgei_imagedir" == true ]]; then
     cmd_textimg+=(-s)
+  fi
+
+  # 画像ではなくテキストのまま出力する
+  if [[ "$raw" == true ]]; then
+    cmd_textimg=(cat)
   fi
 
   "${cmd_input[@]}" |
@@ -89,12 +98,13 @@ Usage:
 Options:
     -h, --help                   ヘルプを出力して終了する
     -v, --version                バージョン情報を出力して終了する
-    -F, --fontsize NUMBER        ベースになるテキストを生成時のフォントサイズを
+    -F, --fontsize NUMBER        ベースになるテキスト生成時のフォントサイズを
                                  指定する
     -b, --background TEXT        背景文字を指定する
     -g, --foreground TEXT        前景文字を指定する
     -d, --dot-fontsize NUMBER    画像出力時のドットのフォントサイズを指定する
     -s, --shellgei-imagedir      /images/t.pngに画像を保存する
+    -R, --raw                    テキストのまま出力する
 EOS
 }
 
