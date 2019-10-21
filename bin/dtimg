@@ -4,7 +4,7 @@ set -eu
 
 SCRIPT_NAME="$(basename "${BASH_SOURCE:-$0}")"
 readonly SCRIPT_NAME
-readonly VERSION="$SCRIPT_NAME version 1.1.0
+readonly VERSION="$SCRIPT_NAME version 1.2.0
 Copyright (c) 2019 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/scripts"
@@ -17,6 +17,7 @@ main() {
   local dot_font_size=10                # ドットのフォントサイズ
   local save_to_shellgei_imagedir=false # シェル芸botの画像ディレクトリに画像を保存する
   local raw=false                       # テキストのまま出力する
+  local threshold="50%" # テキストのスレッショルド
 
   while ((0 < $#)); do
     local opt="$1"
@@ -52,6 +53,10 @@ main() {
       -R | --raw)
         raw=true
         ;;
+      -t | --threshold)
+        threshold="$1"
+        shift
+        ;;
       *)
         args+=("$opt")
         ;;
@@ -75,9 +80,15 @@ main() {
     cmd_textimg=(cat)
   fi
 
+  # thresholdにoffがセットされてる時はオプションを無効化する
+  local cmd_convert=(convert - -threshold "$threshold" -compress none pbm:-)
+  if [[ "$threshold" == off ]]; then
+    cmd_convert=(convert - -compress none pbm:-)
+  fi
+
   "${cmd_input[@]}" |
     textimg -F "$font_size" |
-    convert - -compress none pbm:- |
+    "${cmd_convert[@]}" |
     tail -n +3 |
     tr -d " " |
     replace_text "$bg_text" "$fg_text" |
@@ -96,15 +107,16 @@ Usage:
     $SCRIPT_NAME [options] [text...]
 
 Options:
-    -h, --help                   ヘルプを出力して終了する
-    -v, --version                バージョン情報を出力して終了する
-    -F, --fontsize NUMBER        ベースになるテキスト生成時のフォントサイズを
-                                 指定する
-    -b, --background TEXT        背景文字を指定する
-    -g, --foreground TEXT        前景文字を指定する
-    -d, --dot-fontsize NUMBER    画像出力時のドットのフォントサイズを指定する
-    -s, --shellgei-imagedir      /images/t.pngに画像を保存する
-    -R, --raw                    テキストのまま出力する
+    -h, --help                          ヘルプを出力して終了する
+    -v, --version                       バージョン情報を出力して終了する
+    -F, --fontsize NUMBER               ベースになるテキスト生成時のフォントサイズを
+                                        指定する
+    -b, --background TEXT               背景文字を指定する
+    -g, --foreground TEXT               前景文字を指定する
+    -d, --dot-fontsize NUMBER           画像出力時のドットのフォントサイズを指定する
+    -s, --shellgei-imagedir             /images/t.pngに画像を保存する
+    -R, --raw                           テキストのまま出力する
+    -t, --threshold <NUMBER% | off>     テキストのスレッショルド。
 EOS
 }
 
