@@ -17,7 +17,7 @@ main() {
   local dot_font_size=10                # ドットのフォントサイズ
   local save_to_shellgei_imagedir=false # シェル芸botの画像ディレクトリに画像を保存する
   local raw=false                       # テキストのまま出力する
-  local threshold="50%" # テキストのスレッショルド
+  local threshold="50%"                 # テキストのスレッショルド
 
   while ((0 < $#)); do
     local opt="$1"
