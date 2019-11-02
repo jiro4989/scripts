@@ -17,38 +17,38 @@ coverage() {
 }
 
 @test "5ktrillion" {
-  run bash -c "5ktrillion"
-  [ "$status" -eq 0 ]
+  # run bash -c "5ktrillion"
+  # [ "$status" -eq 0 ]
   coverage 5ktrillion
 
-  run bash -c "5ktrillion -h"
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion -v"
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion -n"
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion -g"
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion -u ドル"
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion 1 2 3 4 5"
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion -n -f -g -u ジンバブエドル"
-  [ "$status" -eq 0 ]
-
-  run bash -c "5ktrillion -5 -n -f -g -u ジンバブエドル 1"
-  [ "$status" -eq 0 ]
-  [ "$output" = "5000兆円欲しい！" ]
-
-  run bash -c "5ktrillion --5000-cho-yen-hosii"
-  [ "$status" -eq 0 ]
-  [ "$output" = "5000兆円欲しい！" ]
+  # run bash -c "5ktrillion -h"
+  # [ "$status" -eq 0 ]
+  #
+  # run bash -c "5ktrillion -v"
+  # [ "$status" -eq 0 ]
+  #
+  # run bash -c "5ktrillion -n"
+  # [ "$status" -eq 0 ]
+  #
+  # run bash -c "5ktrillion -g"
+  # [ "$status" -eq 0 ]
+  #
+  # run bash -c "5ktrillion -u ドル"
+  # [ "$status" -eq 0 ]
+  #
+  # run bash -c "5ktrillion 1 2 3 4 5"
+  # [ "$status" -eq 0 ]
+  #
+  # run bash -c "5ktrillion -n -f -g -u ジンバブエドル"
+  # [ "$status" -eq 0 ]
+  #
+  # run bash -c "5ktrillion -5 -n -f -g -u ジンバブエドル 1"
+  # [ "$status" -eq 0 ]
+  # [ "$output" = "5000兆円欲しい！" ]
+  #
+  # run bash -c "5ktrillion --5000-cho-yen-hosii"
+  # [ "$status" -eq 0 ]
+  # [ "$output" = "5000兆円欲しい！" ]
 }
 
 @test "color" {
