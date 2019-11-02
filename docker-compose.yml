@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  coverage:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: jiro4989/scripts/coverage
+    volumes:
+      - "$PWD:/usr/local/src/scripts"
+    working_dir: /usr/local/src/scripts
+    environment:
+      - TRAVIS_JOB_ID
+    entrypoint:
+      - bats
+      - --tap
+      - test.bats
