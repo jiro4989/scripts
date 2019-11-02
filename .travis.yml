@@ -1,3 +1,6 @@
+services:
+  - docker
+
 language: bash
 
 matrix:
@@ -41,3 +44,4 @@ script:
   - shfmt -i 2 -ci -sr -d bin/
   - shellcheck bin/*
   - ./test.bats
+  - docker-compose up
