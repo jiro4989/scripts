@@ -8,6 +8,7 @@ coverage() {
 
     # CI上で実行されているときだけオプションを追加
     if [[ ! "$TRAVIS_JOB_ID" == "" ]]; then
+      echo "Set options"
       options+=("--coveralls-id=$TRAVIS_JOB_ID")
     fi
 

@@ -41,6 +41,7 @@ install:
   - shellcheck --version
 
 script:
+  - echo "$TRAVIS_JOB_ID"
   - shfmt -i 2 -ci -sr -d bin/
   - shellcheck bin/*
   - ./test.bats
