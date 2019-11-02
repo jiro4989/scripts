@@ -1,7 +1,7 @@
 services:
   - docker
 
-language: bash
+language: python
 
 matrix:
   include:
@@ -39,9 +39,14 @@ install:
   - alias shellcheck='docker run -v "$PWD:/mnt" koalaman/shellcheck'
   - bash --version
   - shellcheck --version
+  - pip install coveralls
 
 script:
   - shfmt -i 2 -ci -sr -d bin/
   - shellcheck bin/*
   - ./test.bats
   - docker-compose up
+  - coverage run test.py 1
+
+after_success:
+  - coveralls
