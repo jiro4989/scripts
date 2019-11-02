@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 def func1():
-    print 1
+    print(1)
 
 def func2():
-    print 2
+    print(2)
 
 def func3(): # pragma: no cover
-    print 3
+    print(3)
 
 if __name__ == "__main__":
     import sys
