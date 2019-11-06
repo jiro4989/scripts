@@ -14,4 +14,4 @@ services:
     entrypoint:
       - bash
       - -c
-      - "bats --tap test.bats; ls -la coverage ; kcov --coveralls-id=$TRAVIS_JOB_ID coverage bin/thx test"
+      - "bats --tap test.bats; find . ; kcov --coveralls-id=$TRAVIS_JOB_ID coverage bin/thx test"
