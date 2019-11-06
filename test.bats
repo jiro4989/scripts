@@ -5,7 +5,7 @@ coverage() {
   # kcovのインストールされている環境でのみ実行
   if which kcov >& /dev/null; then
     echo "kcov was installed"
-    local options=("--tap")
+    local options=()
     #local options=(--bash-dont-parse-binary-dir)
 
     # CI上で実行されているときだけオプションを追加
