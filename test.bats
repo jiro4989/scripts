@@ -1,8 +1,12 @@
 #!/usr/bin/env bats
 
+echo "TravisJobID = $TRAVIS_JOB_ID"
+
 coverage() {
+  echo "Start coverage"
   # kcovのインストールされている環境でのみ実行
   if type kcov 2> /dev/null; then
+    echo "kcov was installed"
     local options=()
     #local options=(--bash-dont-parse-binary-dir)
 
@@ -21,6 +25,7 @@ coverage() {
   # run bash -c "5ktrillion"
   # [ "$status" -eq 0 ]
   coverage 5ktrillion
+  coverage thx System
 
   # run bash -c "5ktrillion -h"
   # [ "$status" -eq 0 ]

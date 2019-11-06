@@ -1,7 +1,7 @@
 services:
   - docker
 
-language: python
+language: bash
 
 matrix:
   include:
