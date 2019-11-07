@@ -47,3 +47,4 @@ script:
   - ./test.bats
   - install -d -m 0777 coverage
   - docker-compose up
+  - find .
