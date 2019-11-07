@@ -45,4 +45,5 @@ script:
   - shfmt -i 2 -ci -sr -d bin/
   - shellcheck bin/*
   - ./test.bats
+  - install -d -m 0777 coverage
   - docker-compose up

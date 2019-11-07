@@ -30,6 +30,7 @@ COPY --from=builder /usr/local/bin/kcov /usr/local/bin/kcov
 
 RUN apt-get update -yqq \
     && apt-get install -y --no-install-recommends \
+       bats \
        binutils-dev \
        libcurl4-openssl-dev \
        libdw-dev \
