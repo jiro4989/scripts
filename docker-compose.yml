@@ -12,6 +12,6 @@ services:
     environment:
       - TRAVIS_JOB_ID
     entrypoint:
-      - bash
-      - -c
-      - "bats --tap test.bats; ls coverage/*; ls bin/* ; kcov --coveralls-id=$TRAVIS_JOB_ID coverage bin/thx test"
+      - bats
+      - --tap
+      - test.bats

@@ -1,21 +1,9 @@
 #!/usr/bin/env bats
 
 coverage() {
-  echo "Start coverage"
   # kcovのインストールされている環境でのみ実行
   if which kcov >& /dev/null; then
-    echo "kcov was installed"
-    local options=()
-    #local options=(--bash-dont-parse-binary-dir)
-
-    # CI上で実行されているときだけオプションを追加
-    if [[ ! "$TRAVIS_JOB_ID" == "" ]]; then
-      echo "Set options"
-      options+=("--coveralls-id=$TRAVIS_JOB_ID")
-    fi
-
-    echo kcov "${options[@]}" coverage "$@"
-    kcov "${options[@]}" coverage "$@" || true
+    kcov coverage "$@" || true
   fi
 }
 

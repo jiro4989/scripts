@@ -1,4 +1,5 @@
 sudo: false
+
 addons:
   apt:
     packages:
@@ -7,21 +8,30 @@ addons:
       - libdw-dev
       - libiberty-dev
       - bats
+
 language: bash
+
 env:
-- PATH=${PATH}:${HOME}/kcov/bin
+  - PATH=${PATH}:${HOME}/kcov/bin
+
 before_install:
-- wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
+  - wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
+
 install:
-- tar xzf master.tar.gz
-- cd kcov-master
-- mkdir build
-- cd build
-- cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov ..
-- make
-- make install
-- cd ../..
-- rm -rf kcov-master
-- mkdir -p coverage
+  - tar xzf master.tar.gz
+  - cd kcov-master
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov ..
+  - make
+  - make install
+  - cd ../..
+  - rm -rf kcov-master
+  - mkdir -p coverage
+
 script:
-- bats --tap test.bats
+  - bats --tap test.bats
+
+after_success:
+  # ダミーで送信
+  - kcov --coveralls-id=$TRAVIS_JOB_ID coverage bin/thx test
