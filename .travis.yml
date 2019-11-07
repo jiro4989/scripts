@@ -1,50 +1,27 @@
-services:
-  - docker
-
-language: bash
-
-matrix:
-  include:
-    - os: linux
-      env: SH_VERSION=default
-    - os: linux
-      env: SH_VERSION=4.3
-    - os: linux
-      env: SH_VERSION=4.4
-    - os: linux
-      env: SH_VERSION=5.0
-
+sudo: false
 addons:
   apt:
     packages:
-      - gawk
-      - gcc
-      - make
-      - golang
-      - shellcheck
-
+      - binutils-dev
+      - libcurl4-openssl-dev
+      - libdw-dev
+      - libiberty-dev
+      - bats
+language: bash
+env:
+- PATH=${PATH}:${HOME}/kcov/bin
 before_install:
-  - sudo add-apt-repository ppa:duggan/bats --yes
-  - sudo apt-get update -qq
-  ## Install bash
-  - export TMPDIR=$TRAVIS_BUILD_DIR/tmp
-  - mkdir -p $TMPDIR
-  - if [[ "$SH_VERSION" != "default" ]];then ( cd "$TMPDIR" && curl "http://ftp.gnu.org/gnu/bash/bash-${SH_VERSION}.tar.gz" | tar xvz && cd bash* && ./configure; make && sudo make install && sudo mv /bin/bash /bin/bash.old && sudo cp ./bash /bin/bash ) ;fi
-  - docker pull koalaman/shellcheck:stable ## Official docker container (v0.6.0 or later)
-
+- wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
 install:
-  - sudo apt-get install -qq bats
-  - GO111MODULE=off go get mvdan.cc/sh/cmd/shfmt
-  - sudo ./install.sh
-  - alias shellcheck='docker run -v "$PWD:/mnt" koalaman/shellcheck'
-  - bash --version
-  - shellcheck --version
-
+- tar xzf master.tar.gz
+- cd kcov-master
+- mkdir build
+- cd build
+- cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov ..
+- make
+- make install
+- cd ../..
+- rm -rf kcov-master
+- mkdir -p coverage
 script:
-  - echo "$TRAVIS_JOB_ID"
-  - shfmt -i 2 -ci -sr -d bin/
-  - shellcheck bin/*
-  - ./test.bats
-  - install -d -m 0777 coverage
-  - docker-compose up
-  - find .
+- bats --tap test.bats
