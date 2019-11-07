@@ -30,7 +30,7 @@ install:
   - mkdir -p coverage
 
 script:
-  - bats --tap test.bats
+  - PATH=$PATH:./bin bats --tap test.bats
 
 after_success:
   # ダミーで送信
