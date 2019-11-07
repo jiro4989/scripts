@@ -24,7 +24,7 @@ RUN git clone --depth 1 https://github.com/SimonKagstrom/kcov \
     && make install \
     && kcov --version
 
-FROM unkontributors/super_unko/ci_sh_default:latest AS runtime
+FROM ubuntu:19.04 AS runtime
 
 COPY --from=builder /usr/local/bin/kcov /usr/local/bin/kcov
 
