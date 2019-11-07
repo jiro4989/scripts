@@ -2,7 +2,6 @@ FROM ubuntu:19.04 AS builder
 
 RUN apt-get update -yqq \
     && apt-get install -y --no-install-recommends \
-       bats \
        binutils-dev \
        build-essential \
        ca-certificates \
@@ -25,3 +24,21 @@ RUN git clone --depth 1 https://github.com/SimonKagstrom/kcov \
     && make install \
     && kcov --version
 
+FROM unkontributors/super_unko/ci_sh_default:latest AS runtime
+
+COPY --from=builder /usr/local/bin/kcov /usr/local/bin/kcov
+
+RUN apt-get update -yqq \
+    && apt-get install -y --no-install-recommends \
+       binutils-dev \
+       libcurl4-openssl-dev \
+       libdw-dev \
+       libiberty-dev \
+       zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# kcovのrootユーザだとカバレッジがとれないバグの回避のため
+RUN useradd -d /home/kcov kcov
+USER kcov
+
+ENTRYPOINT ["kcov"]
