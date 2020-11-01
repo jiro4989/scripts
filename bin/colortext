@@ -1,0 +1,118 @@
+#!/bin/bash
+
+set -eu
+
+SCRIPT_NAME="$(basename "${BASH_SOURCE:-$0}")"
+readonly SCRIPT_NAME
+readonly VERSION="$SCRIPT_NAME version 1.0.0
+Copyright (c) 2020 jiro4989
+Released under the MIT License.
+https://github.com/jiro4989/scripts"
+
+main() {
+  # help, versionのときはアプリを終了する
+  local args=()
+  while ((0 < $#)); do
+    local opt="$1"
+    shift
+    case "$opt" in
+      -h | --help)
+        usage
+        return
+        ;;
+      -v | --version)
+        echo "$VERSION"
+        return
+        ;;
+      -l | --color-list)
+        print_color_list
+        return
+        ;;
+      *)
+        args+=("$opt")
+        ;;
+    esac
+  done
+
+  if [[ "${#args}" -lt 2 ]]; then
+    err "引数が2つ以上必要です。詳細は $SCRIPT_NAME -h を確認してください"
+    return 1
+  fi
+
+  local regexp="${args[0]}"
+  local color="${args[1]}"
+  local color_num=30
+  case "$color" in
+    black)
+      color_num=30
+      ;;
+    red)
+      color_num=31
+      ;;
+    green)
+      color_num=32
+      ;;
+    yellow)
+      color_num=33
+      ;;
+    blue)
+      color_num=34
+      ;;
+    magenta)
+      color_num=35
+      ;;
+    cyan)
+      color_num=36
+      ;;
+    white)
+      color_num=37
+      ;;
+    *)
+      err "colorが不正です。 color = ${color}"
+      err "対応しているcolorは $SCRIPT_NAME -h を確認してください"
+      return 1
+      ;;
+  esac
+
+  sed -E "s/$regexp/\x1b[${color_num}m&\x1b[m/g"
+}
+
+print_color_list() {
+  echo -e "\x1b[30mblack\x1b[m"
+  echo -e "\x1b[31mred\x1b[m"
+  echo -e "\x1b[32mgreen\x1b[m"
+  echo -e "\x1b[33myellow\x1b[m"
+  echo -e "\x1b[34mblue\x1b[m"
+  echo -e "\x1b[35mmagenta\x1b[m"
+  echo -e "\x1b[36mcyan\x1b[m"
+  echo -e "\x1b[37mwhite\x1b[m"
+}
+
+usage() {
+  cat << EOS
+$SCRIPT_NAME は正規表現にマッチした箇所をANSIエスケープで着色します。
+
+Usage:
+    $SCRIPT_NAME
+    $SCRIPT_NAME <regexp> <color>
+    $SCRIPT_NAME [-l | --color-list]
+    $SCRIPT_NAME -h | --help
+    $SCRIPT_NAME -v | --version
+
+Examples:
+    $ echo Hello World | $SCRIPT_NAME 'World' red
+    $ echo Hello World | $SCRIPT_NAME '.*' green
+
+Options:
+    -h, --help          このヘルプを出力する
+    -v, --version       バージョン情報を出力する
+    -l, --color-list    対応している色の一覧を出力する
+EOS
+}
+
+err() {
+  echo -e "[ERROR] $*"
+}
+
+main ${1+"$@"}
+exit $?
